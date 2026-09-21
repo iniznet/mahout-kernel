@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Iniznet\Mahout\Kernel\Tests\Integration;
 
+use Iniznet\Mahout\Kernel\Contracts\QuerySource;
 use Iniznet\Mahout\Kernel\Diagnostics;
 use Iniznet\Mahout\Kernel\Environment;
 use Iniznet\Mahout\Kernel\Exception\KernelAlreadyBooted;
 use Iniznet\Mahout\Kernel\Hooks;
 use Iniznet\Mahout\Kernel\Kernel;
 use Iniznet\Mahout\Kernel\Tests\Fixtures\BootLog;
+use Iniznet\Mahout\Kernel\Tests\Fixtures\ContractBoundProvider;
+use Iniznet\Mahout\Kernel\Tests\Fixtures\InMemoryQuerySource;
 use Iniznet\Mahout\Kernel\Tests\Fixtures\LateProvider;
 use Iniznet\Mahout\Kernel\Tests\Fixtures\RecordingBootFailureResponder;
 use Iniznet\Mahout\Kernel\Tests\Fixtures\RecordingModule;
@@ -68,6 +71,18 @@ final class BootOrderTest extends TestCase
         self::assertTrue($kernel->booted());
         self::assertTrue($kernel->services()->has(Environment::class));
         self::assertTrue($kernel->services()->has(Diagnostics::class));
+    }
+
+    public function testAServiceDeclaredUnderAContractsInterfaceResolvesByIt(): void
+    {
+        $kernel = $this->kernel();
+        $kernel->provider(ContractBoundProvider::class);
+
+        $kernel->boot();
+
+        self::assertContains('contract:'.InMemoryQuerySource::class, BootLog::$events);
+        self::assertTrue($kernel->services()->has(QuerySource::class));
+        self::assertFalse($kernel->services()->has(InMemoryQuerySource::class));
     }
 
     public function testTheProvidersFilterAppendsAProvider(): void

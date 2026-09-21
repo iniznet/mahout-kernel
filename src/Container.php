@@ -4,24 +4,49 @@ declare(strict_types=1);
 
 namespace Iniznet\Mahout\Kernel;
 
+use Iniznet\Mahout\Kernel\Exception\ServiceKeyMismatch;
 use Iniznet\Mahout\Kernel\Exception\ServiceNotFound;
 
 /**
  * The explicit service registry.
  *
  * There is no reflection and no autowiring: a service is resolvable only
- * because the composition root declared it. get() is a typed lookup, so a
- * caller that resolves a collaborator receives its concrete type or a loud
- * failure, never an object it must downcast.
+ * because the composition root declared it, under the key it is resolved by.
+ * The key is a class-string — a concrete class or a Contracts interface — never
+ * an arbitrary string, and get() is a typed lookup, so a caller that resolves a
+ * collaborator receives the type its key declares or a loud failure, never an
+ * object it must downcast.
  */
 final class Container
 {
     /** @var array<class-string, object> */
     private array $services = [];
 
-    public function set(object $service): void
+    /**
+     * Register a service under the key it is resolved by.
+     *
+     * The key defaults to the service's own class name. A composition root that
+     * wants a consumer to depend on a Contracts interface registers the service
+     * under that interface, and get() then returns the interface, so the
+     * dependency is traceable from the consumer's constructor to the one line in
+     * the composition root that declares it. Nothing is registered under a key
+     * the caller did not name: there is no second key, and no lookup by concrete
+     * class for a service declared by contract.
+     *
+     * @template T of object
+     *
+     * @param T                    $service
+     * @param class-string<T>|null $id
+     */
+    public function set(object $service, ?string $id = null): void
     {
-        $this->services[$service::class] = $service;
+        $key = $id ?? $service::class;
+
+        if (!$service instanceof $key) {
+            throw ServiceKeyMismatch::between($key, $service::class);
+        }
+
+        $this->services[$key] = $service;
     }
 
     /** @param class-string $id */
@@ -50,8 +75,8 @@ final class Container
     }
 
     /**
-     * The declared services, in declaration order. This is the enumerable
-     * declaration of the graph.
+     * The declared services, in declaration order, by the key each was declared
+     * under. This is the enumerable declaration of the graph.
      *
      * @return list<class-string>
      */

@@ -17,7 +17,9 @@ The kernel ships `Container`, an explicit declared registry, and
 
 The container is deliberately not a general-purpose resolver:
 
-- `set(object)` registers a service under its own class name.
+- `set(object, ?string)` registers a service under the key it is resolved by: its own class name by
+  default, or a `Contracts` interface when the composition root declares it by contract. Amended by
+  ADR-0006; the rest of this ADR is unchanged.
 - `get(class-string<T>): T` is a typed lookup. There is no string identifier, no
   reflection and no autowiring.
 - `get()` on an undeclared service throws `ServiceNotFound`.

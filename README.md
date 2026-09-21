@@ -75,6 +75,10 @@ final class ThemeProvider implements ServiceProvider
     public function register(Container $container): void
     {
         $container->set(new ThemeSupport());
+
+        // A collaborator a consumer depends on by contract is declared under
+        // that contract, and resolved by it.
+        $container->set(service: new SeriesRepository(), id: SeriesLookup::class);
     }
 
     public function boot(Container $container): void
@@ -83,6 +87,21 @@ final class ThemeProvider implements ServiceProvider
     }
 }
 ```
+
+`set()` registers a service under the key it is resolved by. The key defaults to the
+service's own class name; pass a `Contracts` interface to declare the service by contract.
+`get()` is a typed lookup, so a caller resolving an interface receives that interface:
+
+```php
+$container->set(service: $connection, id: SqlConnection::class);
+
+$container->get(SqlConnection::class);   // SqlConnection
+```
+
+The analyzer checks at the call site that the service satisfies the key, and
+`ServiceKeyMismatch` is thrown when a dynamically built call does not. The key
+is a class-string, never an arbitrary identifier: there is no reflection and no
+autowiring, and a service is resolvable only because a line declared it.
 
 ## Documented public concrete classes
 

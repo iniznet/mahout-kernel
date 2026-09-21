@@ -94,11 +94,17 @@ final class Kernel
     }
 
     /**
-     * Register an already-built service under its own class name.
+     * Register an already-built service under its own class name, or under the
+     * Contracts interface a consumer depends on.
+     *
+     * @template T of object
+     *
+     * @param T                    $service
+     * @param class-string<T>|null $id
      */
-    public function service(object $service): self
+    public function service(object $service, ?string $id = null): self
     {
-        $this->container->set($service);
+        $this->container->set($service, $id);
 
         return $this;
     }

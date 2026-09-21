@@ -8,6 +8,7 @@ use Iniznet\Mahout\Kernel\Exception\InvalidHookPayload;
 use Iniznet\Mahout\Kernel\Exception\KernelAlreadyBooted;
 use Iniznet\Mahout\Kernel\Exception\KernelBootFailed;
 use Iniznet\Mahout\Kernel\Exception\MahoutException;
+use Iniznet\Mahout\Kernel\Exception\ServiceKeyMismatch;
 use Iniznet\Mahout\Kernel\Exception\ServiceNotFound;
 use Iniznet\Mahout\Kernel\Exception\SpanNotStarted;
 use Iniznet\Mahout\Kernel\Tests\TestCase;
@@ -26,6 +27,7 @@ final class ExceptionTest extends TestCase
             KernelBootFailed::withoutDatabase(),
             KernelAlreadyBooted::secondCall(),
             ServiceNotFound::forId('App\\Service'),
+            ServiceKeyMismatch::between('App\\Contracts\\Service', 'App\\Service'),
             SpanNotStarted::forName('surface'),
             InvalidHookPayload::notAList('mahout/kernel/providers'),
             InvalidHookPayload::notAClass('mahout/kernel/providers'),
@@ -40,5 +42,7 @@ final class ExceptionTest extends TestCase
 
         self::assertSame($previous, KernelBootFailed::because($previous)->getPrevious());
         self::assertSame('App\\Service', ServiceNotFound::forId('App\\Service')->serviceId());
+        self::assertSame('App\\Contracts\\Service', ServiceKeyMismatch::between('App\\Contracts\\Service', 'App\\Service')->key());
+        self::assertSame('App\\Service', ServiceKeyMismatch::between('App\\Contracts\\Service', 'App\\Service')->service());
     }
 }
