@@ -10,6 +10,8 @@ use Iniznet\Mahout\Kernel\Contracts\ServiceProvider;
 use Iniznet\Mahout\Kernel\Exception\InvalidHookPayload;
 use Iniznet\Mahout\Kernel\Exception\KernelAlreadyBooted;
 use Iniznet\Mahout\Kernel\Exception\KernelBootFailed;
+use Iniznet\Mahout\Kernel\Exception\SecondCompositionRoot;
+use Iniznet\Mahout\Kernel\Internal\ProcessClaim;
 use Iniznet\Mahout\Kernel\Internal\WordPressBootFailureResponder;
 use Iniznet\Mahout\Kernel\Internal\WpdbQuerySource;
 
@@ -52,9 +54,23 @@ final class Kernel
     /**
      * The composition-root named constructor: the three WordPress facts and the
      * wpdb query source, read once, inside one boundary.
+     *
+     * The root names itself, and the naming is not decoration. Two hosts that each
+     * install the packages — a theme and a plugin, say — do not fail loudly when
+     * they meet: one autoloader wins and serves its copies to both, while the
+     * schema-version option, the field tables and the hook namespace are shared with
+     * no owner recorded anywhere. A process may have one root of record, so the
+     * second distinct claim is refused here, before a single hook is attached,
+     * rather than reconciled later in the request.
+     *
+     * @param class-string $root the composition root booting this process, normally `self::class`
+     *
+     * @throws SecondCompositionRoot when a different root has already claimed this process
      */
-    public static function inWordPress(): self
+    public static function inWordPress(string $root): self
     {
+        ProcessClaim::claim($root);
+
         $environment = Environment::fromWordPress();
         $wpdb = $GLOBALS['wpdb'] ?? null;
 

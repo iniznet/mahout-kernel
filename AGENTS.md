@@ -273,8 +273,19 @@ containers.
 **Boundary and composition-root exceptions, and nothing else:** the theme's
 `Request::fromSuperglobals()`, `Bootstrap::run()`, `Bootstrap::render()`,
 `Bootstrap::services()`, `Surfaces::resolve()`, and this package's
-`Kernel::inWordPress()`. The test is not "is it static" but "does it resolve a
-collaborator".
+`Kernel::inWordPress()` — which takes the root's own class name and claims the
+process through `Internal\ProcessClaim`. The test is not "is it static" but "does
+it resolve a collaborator": `ProcessClaim` resolves nothing and holds one identity,
+it is reachable from no other call site, and it is not named a registry for that
+reason. `release()` is the test seam for a process booting more than one fixture; no
+production path calls it.
+
+**One process, one composition root** (ADR-0007). The first root to call
+`inWordPress()` owns the process; the same root calling again is idempotent; a
+different root raises `SecondCompositionRoot` naming both, before a hook is attached.
+The packages are installed by exactly one host on a site, and every other host
+consumes that runtime over hooks or REST — enforced at deploy time by devtools'
+`doctor` `CompositionRootCheck` and at boot by this claim.
 
 ---
 
@@ -325,6 +336,7 @@ composer check       # all of the above
 | Every value object's invariant, including rejection |
 | Every exception's named constructor |
 | Every repository query shape |
+| The process claim: first root wins, same root is idempotent, second root is refused naming both |
 | Field round-trip on `Meta` and on `Table` |
 | `meta` to `table` and `table` to `meta` migration |
 | Every Surface's query ceiling |

@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Iniznet\Mahout\Kernel\Tests\Unit;
 
+use Iniznet\Mahout\Kernel\Container;
 use Iniznet\Mahout\Kernel\Exception\InvalidHookPayload;
 use Iniznet\Mahout\Kernel\Exception\KernelAlreadyBooted;
 use Iniznet\Mahout\Kernel\Exception\KernelBootFailed;
 use Iniznet\Mahout\Kernel\Exception\MahoutException;
+use Iniznet\Mahout\Kernel\Exception\SecondCompositionRoot;
 use Iniznet\Mahout\Kernel\Exception\ServiceKeyMismatch;
 use Iniznet\Mahout\Kernel\Exception\ServiceNotFound;
 use Iniznet\Mahout\Kernel\Exception\SpanNotStarted;
+use Iniznet\Mahout\Kernel\Kernel;
 use Iniznet\Mahout\Kernel\Tests\TestCase;
 
 /**
@@ -33,6 +36,7 @@ final class ExceptionTest extends TestCase
             InvalidHookPayload::notAClass('mahout/kernel/providers'),
             InvalidHookPayload::notAProvider('mahout/kernel/providers'),
             InvalidHookPayload::notAModule('mahout/kernel/modules'),
+            SecondCompositionRoot::after(Kernel::class, Container::class),
         ];
 
         foreach ($exceptions as $exception) {
