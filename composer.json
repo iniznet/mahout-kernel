@@ -10,6 +10,12 @@
         "container",
         "diagnostics"
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/iniznet/mahout-devtools.git"
+        }
+    ],
     "require": {
         "php": ">=8.4"
     },

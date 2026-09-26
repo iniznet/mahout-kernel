@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30318c5147284339848dee330b4e9166",
+    "content-hash": "13a0d1bf03661c34a0e2a7a1c0769a6b",
     "packages": [],
     "packages-dev": [
         {
@@ -1697,22 +1697,27 @@
         {
             "name": "iniznet/mahout-devtools",
             "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iniznet/mahout-devtools.git",
+                "reference": "1c99b4a2f9318cfc0b15bdef4ef59f551d52c9a1"
+            },
             "dist": {
-                "type": "path",
-                "url": "../mahout-devtools",
-                "reference": "c968fad58e178a1db38da8719154fe55dcf90a29"
+                "type": "zip",
+                "url": "https://api.github.com/repos/iniznet/mahout-devtools/zipball/1c99b4a2f9318cfc0b15bdef4ef59f551d52c9a1",
+                "reference": "1c99b4a2f9318cfc0b15bdef4ef59f551d52c9a1",
+                "shasum": ""
             },
             "require": {
-                "php": ">=8.4"
-            },
-            "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.64",
+                "php": ">=8.4",
                 "phpstan/phpstan": "^2.1",
                 "phpunit/phpunit": "^9.6",
                 "rector/rector": "^2.0",
                 "vimeo/psalm": "^6.0",
                 "yoast/phpunit-polyfills": "^1.1"
             },
+            "default-branch": true,
             "bin": [
                 "bin/mahout-devtools"
             ],
@@ -1804,10 +1809,11 @@
                 "tooling",
                 "wordpress"
             ],
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/iniznet/mahout-devtools/tree/main",
+                "issues": "https://github.com/iniznet/mahout-devtools/issues"
+            },
+            "time": "2026-09-22T15:24:24+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -6844,15 +6850,13 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "iniznet/mahout-devtools": 20
-    },
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": {},
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.4"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.9.0"
 }

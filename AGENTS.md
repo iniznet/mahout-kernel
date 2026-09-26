@@ -371,7 +371,6 @@ only the following, deviations. Each is an ADR, not an edit to the contract.
 | The sketch's `new Kernel()` becomes `Kernel::inWordPress()` at the composition root | The kernel needs the environment and `$wpdb`, which the no-argument form cannot supply | 0002 |
 | `Diagnostics::__construct(Environment)` gains a `QuerySource` collaborator | It keeps `$wpdb` behind one boundary and makes the query-count proof database-free | 0003 |
 | `composer stan` and `composer arch` run the same shared PHPStan config | A consumer's root config must include the shared one, which already carries the rules | 0004 |
-| The committed `composer.lock` is resolved through the uncommitted path repository | `mahout-devtools` is not published yet, and REP-11 forbids a committed `path` repository | 0005 |
 | `Container::set(object, ?string)` takes the key it registers under, defaulting to the service's own class name | A `Contracts` interface is the public API; a container that can only key by the concrete class forces a consumer to name an implementation it is not allowed to depend on. One method with an explicit key, not a second registration path | 0006 |
 
 No other rule in this document is relaxed. In particular: no reflection, no

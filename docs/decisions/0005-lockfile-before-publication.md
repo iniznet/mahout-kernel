@@ -1,6 +1,12 @@
 # ADR-0005 — The committed lockfile is resolved through the uncommitted path repository
 
-Status: accepted
+Status: superseded by `iniznet/mahout-devtools` ADR-0008
+
+The decision below recorded the committed lockfile as resolved through the
+uncommitted path repository. The family's repositories are published now, each
+manifest declares its family requirements as committed VCS repositories, and
+each lock resolves over them, so a fresh clone installs. `PathRepositoryCheck`
+fails a lock that pins a `path` dist.
 
 ## Context
 
