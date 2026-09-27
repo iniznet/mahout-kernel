@@ -25,6 +25,41 @@ final class RuntimeIdentityTest extends TestCase
 {
     private const string PREFIX = 'wp_';
 
+    /**
+     * The namespace names the host, and the class inside it does not: two roots that
+     * share a namespace derive the same identity, so renaming `Bootstrap` to
+     * `Root` cannot move a site's storage.
+     */
+    public function testTheIdentityComesFromTheNamespaceAndNotTheClassName(): void
+    {
+        $fromKernel = RuntimeIdentity::fromClass(\Iniznet\Mahout\Kernel\Kernel::class);
+        $fromDiagnostics = RuntimeIdentity::fromClass(\Iniznet\Mahout\Kernel\Diagnostics::class);
+
+        self::assertSame('kernel', $fromKernel->value);
+        self::assertSame($fromKernel->value, $fromDiagnostics->value);
+        self::assertSame('mahout_kernel_db_schema_version', $fromKernel->namespacedName('db_schema_version'));
+    }
+
+    public function testASecondNamespaceDerivesASecondIdentity(): void
+    {
+        self::assertSame('tests', RuntimeIdentity::fromClass(TestCase::class)->value);
+    }
+
+    /**
+     * A skin fact is refused by construction: this type has no path to the active
+     * stylesheet or the plugin directory, so the only way in is the host's own name.
+     */
+    public function testANamespacelessRootHasNothingToDerive(): void
+    {
+        try {
+            RuntimeIdentity::fromClass('Bootstrap');
+            self::fail('a root with no namespace must be refused rather than guessed at');
+        } catch (InvalidRuntimeIdentity $failure) {
+            self::assertStringContainsString('carries no namespace', $failure->getMessage());
+            self::assertStringContainsString('fromSlug', $failure->remedy());
+        }
+    }
+
     public function testTheWidestComposedNameIsWhatTheTableCallsFor(): void
     {
         $identity = RuntimeIdentity::fromSlug('howdah');

@@ -30,6 +30,25 @@ final class InvalidRuntimeIdentity extends \InvalidArgumentException implements 
         parent::__construct($message);
     }
 
+    /**
+     * A composition root that carries no namespace has no host name to derive, and
+     * inventing one from the site would repeat the mistake this type exists to
+     * refuse: a name that is not the host's own.
+     *
+     * @param class-string $root
+     */
+    public static function nothingToDerive(string $root): self
+    {
+        return new self(
+            \sprintf(
+                'The composition root "%s" carries no namespace, so there is no host name to derive an identity from.',
+                $root,
+            ),
+            $root,
+            "Declare the identity from the host's own slug with RuntimeIdentity::fromSlug('the-host-slug'), or give the host a namespace.",
+        );
+    }
+
     public static function notIdentifierSafe(string $identity): self
     {
         return new self(

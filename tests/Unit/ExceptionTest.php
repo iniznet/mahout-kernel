@@ -40,6 +40,7 @@ final class ExceptionTest extends TestCase
             InvalidHookPayload::notAModule('mahout/kernel/modules'),
             SecondCompositionRoot::after(Kernel::class, Container::class),
             InvalidRuntimeIdentity::notIdentifierSafe('office-suite'),
+            InvalidRuntimeIdentity::nothingToDerive('Bootstrap'),
             InvalidRuntimeIdentity::overBudget('a_very_long_identity_indeed', 'wp_mahout_a_very_long_identity_indeed_field_values', 41),
             RuntimeIdentityNotDeclared::forPackage(Kernel::class),
         ];
