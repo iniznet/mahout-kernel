@@ -6,9 +6,11 @@ namespace Iniznet\Mahout\Kernel\Tests\Unit;
 
 use Iniznet\Mahout\Kernel\Container;
 use Iniznet\Mahout\Kernel\Exception\InvalidHookPayload;
+use Iniznet\Mahout\Kernel\Exception\InvalidRuntimeIdentity;
 use Iniznet\Mahout\Kernel\Exception\KernelAlreadyBooted;
 use Iniznet\Mahout\Kernel\Exception\KernelBootFailed;
 use Iniznet\Mahout\Kernel\Exception\MahoutException;
+use Iniznet\Mahout\Kernel\Exception\RuntimeIdentityNotDeclared;
 use Iniznet\Mahout\Kernel\Exception\SecondCompositionRoot;
 use Iniznet\Mahout\Kernel\Exception\ServiceKeyMismatch;
 use Iniznet\Mahout\Kernel\Exception\ServiceNotFound;
@@ -37,6 +39,9 @@ final class ExceptionTest extends TestCase
             InvalidHookPayload::notAProvider('mahout/kernel/providers'),
             InvalidHookPayload::notAModule('mahout/kernel/modules'),
             SecondCompositionRoot::after(Kernel::class, Container::class),
+            InvalidRuntimeIdentity::notIdentifierSafe('office-suite'),
+            InvalidRuntimeIdentity::overBudget('a_very_long_identity_indeed', 'wp_mahout_a_very_long_identity_indeed_field_values', 41),
+            RuntimeIdentityNotDeclared::forPackage(Kernel::class),
         ];
 
         foreach ($exceptions as $exception) {
