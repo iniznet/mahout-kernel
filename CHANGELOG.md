@@ -16,6 +16,16 @@ order. The format follows Semantic Versioning; a major entry names each removal.
 
 ### Changed
 
+- The generated hook reference is now two documents — `docs/reference/actions.md` and
+  `docs/reference/filters.md`, replacing `docs/reference/hooks.md`. A single mixed table
+  asked the reader to filter rows for the question they actually came with, which hooks
+  fire and forget versus which hooks return a value, and that distinction is already
+  recorded on every constant's docblock. `composer hooks:check` gates both files, and a
+  package that declares none of one kind still carries the other document, so the gate
+  cannot quietly stop running. Adopted from `iniznet/mahout-devtools` 2.0.1, whose
+  `hooks:check` and `hooks:generate` take `--outdir=docs/reference`; the canonical command
+  text lives in that package's gate manifest, and this repository's scripts are compared
+  against it by `composer config:check`.
 - `Container::set()` takes an optional `class-string` key and registers the
   service under it, so a service can be declared and resolved by the `Contracts`
   interface a consumer depends on. The key defaults to the service's own class

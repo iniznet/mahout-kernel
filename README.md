@@ -120,7 +120,7 @@ Every documented public class is part of the stable surface within a major.
 
 The kernel emits `mahout/kernel/before_boot`, `mahout/kernel/after_boot` and
 `mahout/kernel/boot_failed`, and filters `mahout/kernel/providers` and
-`mahout/kernel/modules`. The generated reference is `docs/reference/hooks.md`.
+`mahout/kernel/modules`. The generated references are `docs/reference/actions.md` and `docs/reference/filters.md`.
 
 ## Compatibility
 

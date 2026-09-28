@@ -23,7 +23,7 @@ hooks and bootstraps domain state; it performs no infrastructure attachment.
 
 Hook names are `public const` on the package's `Hooks` class — never an
 inline string. Actions never return; filters always return the first
-argument. The generated reference is `docs/reference/hooks.md`; a stale
+argument. The generated references are `docs/reference/actions.md` and `docs/reference/filters.md`; a stale
 committed copy fails the suite.
 
 ## Ordering rules the boot sequence enforces
