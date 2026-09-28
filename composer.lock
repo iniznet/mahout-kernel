@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13a0d1bf03661c34a0e2a7a1c0769a6b",
+    "content-hash": "37ac4c9906cbb06978efa17b7c0f61e9",
     "packages": [],
     "packages-dev": [
         {
@@ -1699,7 +1699,7 @@
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/iniznet/mahout-devtools.git",
+                "url": "git@github.com:iniznet/mahout-devtools.git",
                 "reference": "1c99b4a2f9318cfc0b15bdef4ef59f551d52c9a1"
             },
             "dist": {
