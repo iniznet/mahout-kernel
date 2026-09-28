@@ -1700,7 +1700,7 @@
             "version": "2.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/iniznet/mahout-devtools.git",
+                "url": "git@github.com:iniznet/mahout-devtools.git",
                 "reference": "faaeab036dca10a7d71d2f39a7b8634b1de9a4bd"
             },
             "dist": {
@@ -1804,10 +1804,6 @@
                 "tooling",
                 "wordpress"
             ],
-            "support": {
-                "source": "https://github.com/iniznet/mahout-devtools/tree/2.0.1",
-                "issues": "https://github.com/iniznet/mahout-devtools/issues"
-            },
             "time": "2026-09-28T17:43:09+00:00"
         },
         {
